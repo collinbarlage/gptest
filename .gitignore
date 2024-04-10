@@ -1,0 +1,6 @@
+
+*.log
+functions/hosting
+functions/firebase-debug.log
+merch-spider/node_modules
+merch-spider/dist/merch

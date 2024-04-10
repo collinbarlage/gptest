@@ -1,0 +1,12 @@
+{
+  "name": "gp-test",
+  "version": "1.0.0",
+  "description": "gp test!",
+  "main": "index.js",
+  "scripts": {
+    "client": "cd client && npm start",
+    "build:client": "cd client && npm run build"
+  },
+  "author": "Collin Barlage",
+  "license": "ISC"
+}
