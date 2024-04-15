@@ -12,7 +12,7 @@ function App() {
     userToken = "user token not found. redirecting..."
 
     setTimeout(function() {
-      window.location.href = "https://localhost:4002/c/quick-add?backdoor=true&redirect=gp-test-ee816.web.app"
+      window.location.href = "http://localhost:4002/c/quick-add?backdoor=true&redirect=gp-test-ee816.web.app"
       // window.location.href = "http://localhost:4002/c/quick-add?backdoor=true&redirect=localhost:3000"
     }, 1500)
   }
