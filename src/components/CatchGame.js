@@ -6,6 +6,7 @@ const CatchGame = () => {
     const engineRef = useRef(null)
     const runnerRef = useRef(null)
     const renderRef = useRef(null)
+    const constraintMapRef = useRef(new Map())
 
     useEffect(() => {
         // create engine
@@ -14,7 +15,7 @@ const CatchGame = () => {
         engineRef.current = engine
         engine.gravity.scale = 0.0005
 
-        const catcherPosition = 550
+        const catcherPosition = 700
         const snacks = ['gushers', 'icecream', 'oreo', 'uncrustable']
 
         // create renderer
@@ -22,7 +23,7 @@ const CatchGame = () => {
             canvas: canvasRef.current,
             engine: engine,
             options: {
-                width: 800,
+                width: 375,
                 height: 600,
                 showVelocity: true,
                 showAngleIndicator: false,
@@ -41,7 +42,7 @@ const CatchGame = () => {
 
 
         // add bodies
-        const catcher = Matter.Bodies.rectangle(400, catcherPosition, 200, 250, {
+        const catcher = Matter.Bodies.rectangle(400, catcherPosition, 200, 50, {
           isStatic: false,
           chamfer: 10,
           render: {
@@ -49,7 +50,7 @@ const CatchGame = () => {
               texture: './bag.png',
               xScale: 0.5,
               yScale: 0.5,
-              yOffset: -.1
+              yOffset: -.45
             }
           }
         })
@@ -57,7 +58,7 @@ const CatchGame = () => {
         const createSnack = () => {
 
           var img = snacks[Math.floor(Math.random()*snacks.length)]
-          const snack = Matter.Bodies.rectangle(Math.random() * 800, 0, 50, 50, {
+          const snack = Matter.Bodies.rectangle(Math.random() * 375, -300, 50, 50, {
             isStatic: false,
             render: {
               sprite: {
@@ -75,9 +76,9 @@ const CatchGame = () => {
             catcher
         ])
 
+
+        // update
         Matter.Events.on(engine, 'beforeUpdate', function() {
-
-
           Matter.Body.setAngularVelocity(catcher, 0)
           Matter.Body.setVelocity(catcher, {
             x: 0,
@@ -90,6 +91,25 @@ const CatchGame = () => {
           })
 
         })
+
+
+  // add collision event handler
+        Matter.Events.on(engine, 'collisionStart', function(event) {
+            const pairs = event.pairs;
+            pairs.forEach(pair => {
+                const { bodyA, bodyB } = pair;
+                    if (!constraintMapRef.current.get(bodyB)) {
+                        const constraint = Matter.Constraint.create({
+                            bodyA: bodyA,
+                            bodyB: bodyB,
+                            stiffness: .1,
+                        });
+                        Matter.World.add(world, constraint);
+                        constraintMapRef.current.set(bodyB, constraint);
+                    }
+            });
+        });
+
 
         // add mouse control
         const mouse = Matter.Mouse.create(render.canvas)
