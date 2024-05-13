@@ -36,3 +36,47 @@
     transform: rotate(360deg);
   }
 }
+
+
+.rush-hour {
+  text-align: center;
+}
+
+.board {
+  display: inline-block;
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+  border: 1px solid black;
+  box-sizing: border-box;
+}
+
+.cell.empty {
+  background-color: lightgrey;
+}
+
+.cell.car-1 {
+  background-color: blue;
+}
+
+.cell.car-2 {
+  background-color: green;
+}
+
+.cell.car-3 {
+  background-color: red;
+}
+
+.cell.car-4 {
+  background-color: yellow;
+}
+
+.cell.car-5 {
+  background-color: orange;
+}
