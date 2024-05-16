@@ -1,17 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
-import React, { useState } from 'react';
+import logo from './logo.svg'
+import './App.css'
+import React, { useState, useEffect } from 'react'
 
-import CatchGame from './components/CatchGame';
-import RushHour from './components/RushHour';
+import CatchGame from './components/CatchGame'
+import RushHour from './components/RushHour'
 
 import utils from './utils'
 
 
 function App() {
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const userBlob = urlParams.get('userBlob');
+  const urlParams = new URLSearchParams(window.location.search)
+  const userBlob = urlParams.get('userBlob')
   var userInfo = "user token not found. redirecting...."
   const [cart, setCart] = useState({})
   const [productId, setProductId] = useState(1076)
@@ -27,12 +27,14 @@ function App() {
     userInfo = JSON.parse(atob(userBlob))
   }
 
-  if (userBlob && (!cart || !cart.products)) {
-    utils.getCart(userInfo.userToken).then(response => {
-      setCart(response.data.view.cart)
-      console.log('~~~> cart', response.data.view.cart)
-    })
-  }
+  useEffect(() => {
+    if (userBlob) {
+      utils.getCart(userInfo.userToken).then(response => {
+        setCart(response.data.view.cart)
+        console.log('~~~> cart', response.data.view.cart)
+      })
+    }
+  }, [userBlob, userInfo.userToken])
 
 
   function addToCart() {
@@ -84,7 +86,7 @@ function App() {
 
 
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
