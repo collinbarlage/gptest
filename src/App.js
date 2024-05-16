@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
 
 import CatchGame from './components/CatchGame';
 import RushHour from './components/RushHour';
@@ -12,23 +13,44 @@ function App() {
   const urlParams = new URLSearchParams(window.location.search);
   const userBlob = urlParams.get('userBlob');
   var userInfo = "user token not found. redirecting...."
-  var cart = {}
+  const [cart, setCart] = useState({})
+  const [productId, setProductId] = useState(1076)
+  const [statusMessage, setStatusMessage] = useState('')
 
 
   if (!userBlob) {
     setTimeout(function() {
-      // window.location.href = "http://localhost:4002/c/quick-add?backdoor=true&redirect=gp-test-ee816.web.app"
-      window.location.href = "http://localhost:4002/c/quick-add?backdoor=true&redirect=localhost:3000"
+      window.location.href = "http://localhost:4002/c/quick-add?backdoor=true&redirect=gp-test-ee816.web.app"
+      // window.location.href = "http://localhost:4002/c/quick-add?backdoor=true&redirect=localhost:3000"
     }, 1500)
   } else {
     userInfo = JSON.parse(atob(userBlob))
+  }
+
+  if (userBlob && (!cart || !cart.products)) {
     utils.getCart(userInfo.userToken).then(response => {
-      cart = response.data.view.cart
-      console.log('~~~> cart', cart)
+      setCart(response.data.view.cart)
+      console.log('~~~> cart', response.data.view.cart)
     })
   }
 
 
+  function addToCart() {
+    setStatusMessage("Loading ...")
+    utils.addToCart(cart, userInfo.userToken, productId).then(response => {
+      if (response?.data?.view?.setCart?.products) {
+        setStatusMessage(JSON.stringify(response.data.view.setCart.products.map(p => {
+          return {
+            id: p.id,
+            quantity: p.quantity
+          }
+        })))
+      } else {
+        setStatusMessage("error :(")
+      }
+
+    })
+  }
 
   return (
     <div className="App">
@@ -43,9 +65,22 @@ function App() {
       {JSON.stringify(userInfo)}
 
       <br />
-      <button onClick={(e) => utils.addToCart(cart, userInfo.userToken, 1076)}> atc </button>
+      <br />
+      product id:
+      <input
+        type="number"
+        value={productId}
+        onChange={(e) => setProductId(e.target.value)}
+      />
+      <br />
+      <button onClick={(e) => addToCart()}> atc </button>
+      <br />
+      <div>{statusMessage}</div>
+      <br />
+      <br />
+      <br />
 
-      {/*{userBlob && <CatchGame />}*/}
+      {userBlob && <CatchGame />}
 
 
     </div>

@@ -1,10 +1,11 @@
 
 async function addToCart(cart, userToken, productId) {
+  console.log('~~~> productId', productId)
   var products = cart.products
   if (cart.products.find(p => p.id === productId)) {
     products.find(p => p.id === productId).quantity ++
   } else {
-    products.push({id: productId,
+    products.push({id: parseInt(productId),
       price: 0,
       quantity: 1,
       giftCards: [],
@@ -20,7 +21,7 @@ async function addToCart(cart, userToken, productId) {
     }
   })
 
-  fetch('https://graphql-federation-gateway.consumer.gopuff.com/graphql', {
+  const response = await fetch('https://graphql-federation-gateway.consumer.gopuff.com/graphql', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -311,7 +312,8 @@ async function addToCart(cart, userToken, productId) {
           },
     }),
   })
-
+  const responseData = await response.json();
+  return responseData
 }
 
 
