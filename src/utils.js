@@ -321,19 +321,7 @@ async function getCart(userToken) {
   try {
     const response = await fetch('https://graphql-federation-gateway.consumer.gopuff.com/graphql', {
       method: 'POST',
-      headers: {
-        'accept': 'application/graphql+json, application/json',
-        'accept-language': 'en-US',
-        'authorization': `Token token=${userToken}`,
-        'content-type': 'application/json',
-        'origin': 'https://www.gopuff.com',
-        'priority': 'u=1, i',
-        'sec-ch-ua-mobile': '?1',
-        'sec-fetch-dest': 'empty',
-        'sec-fetch-mode': 'cors',
-        'sec-fetch-site': 'same-site',
-        'x-gp-point-of-sale': 'US'
-      },
+      headers: getHeaders(userToken),
       body: JSON.stringify({
         query: "query Cart($validate: Boolean = false, $taxes: Boolean = true) {\n  view {\n    cart(validate: $validate, taxes: $taxes) {\n      ...Cart\n      appliedCoupon @include(if: $validate) {\n        ...AppliedCoupon\n      }\n    }\n  }\n}\n\nfragment CartProduct on CartProduct {\n  id\n  price\n  quantity\n  availableQuantity\n  giftCards {\n    receiverName\n    receiverEmail\n    senderMessage\n    senderName\n  }\n  type\n  error {\n    code\n    message\n  }\n}\n\nfragment CartProductSample on CartProductSample {\n  productId\n  title\n  availableQuantity\n  description\n  imageUrl\n  isInsert\n  isVisible\n}\n\nfragment CartErrorProduct on CartErrorProduct {\n  id\n  price\n  quantity\n  availableQuantity\n}\n\nfragment CartCoupon on CartCoupon {\n  name\n  id\n  value\n  percent\n  productSubtotal\n  discount\n  type\n}\n\nfragment Fee on Fee {\n  code\n  amount\n  originalAmount\n  config {\n    title\n    description\n    bounds {\n      amount\n      lowBound\n      highBound\n    }\n    applicableSubtotal\n  }\n}\n\nfragment DiscountsByChannels on PriceChannelDiscount {\n  channel\n  discount\n  isActive\n}\n\nfragment OrderSummary on OrderSummary {\n  subtotal\n  deliveryFee\n  deliveryDiscount\n  discountSubtotal\n  alcoholFee\n  seattleMandateFee\n  discount\n  subtotalMinimum\n  tax\n  tip\n  total\n  discountsByChannels {\n    ...DiscountsByChannels\n  }\n  fees {\n    ...Fee\n  }\n  subtotalWithoutChannelDiscount\n  isMinOrderValueMet\n  mov\n  remainingSubtotal\n  nonEBTSubtotal\n  ebtSubtotal\n  nonEBTEligibleSubtotal\n  ebtEligibleSubtotal\n  nonEBTTotal\n}\n\nfragment CartTipOptions on CartTipOptions {\n  value1: value_1\n  value2: value_2\n  value3: value_3\n}\n\nfragment TipOptionsPercentage on TipOptionsPercentage {\n  percentage\n  amount\n}\n\nfragment CartTipOptionsPercentage on CartTipOptionsPercentage {\n  tipOptions {\n    ...TipOptionsPercentage\n  }\n  defaultValue\n  defaultValueDollarAmount\n}\n\nfragment CartDeliveryZone on CartDeliveryZone {\n  id\n  rank\n}\n\nfragment CartRecipient on CartRecipient {\n  addressId\n  name\n  phone\n  email\n}\n\nfragment CartSender on CartSender {\n  phone\n  name\n}\n\nfragment CartGift on CartGift {\n  from\n  message\n}\n\nfragment OrderOption on OrderOption {\n  key\n  value\n}\n\nfragment InvoiceCreditDebit on InvoiceCreditDebit {\n  amount\n  type\n  title\n  comments\n}\n\nfragment Cart on Cart {\n  id\n  userId\n  locationId\n  latitude\n  longitude\n  contentParams\n  email\n  couponCode\n  fulfillmentType\n  isGift\n  orderType\n  scheduledFrom\n  scheduledTo\n  isPriorityFulfillment\n  interactionId\n  invoiceId\n  userSelectedEbtAmount\n  defaultCustomTip\n  deliveryZones {\n    ...CartDeliveryZone\n  }\n  products {\n    ...CartProduct\n  }\n  productSamples {\n    ...CartProductSample\n  }\n  coupons {\n    ...CartCoupon\n  }\n  orderSummary {\n    ...OrderSummary\n  }\n  errors {\n    type\n    code\n    message\n    product {\n      ...CartErrorProduct\n    }\n  }\n  tipOptions {\n    ...CartTipOptions\n  }\n  tipOptionsPercentage {\n    ...CartTipOptionsPercentage\n  }\n  deliveryZones {\n    id\n    rank\n  }\n  recipient {\n    ...CartRecipient\n  }\n  sender {\n    ...CartSender\n  }\n  giftDetails {\n    ...CartGift\n  }\n  orderOptions {\n    ...OrderOption\n  }\n  creditsAndDebits {\n    ...InvoiceCreditDebit\n  }\n  credits\n  debits\n}\n\nfragment AppliedCoupon on AppliedCoupon {\n  appliedCoupons {\n    ...Coupon\n  }\n  subtotal\n  subtotalMinimum: subtotal_minimum\n  discount\n  total\n}\n\nfragment Coupon on Coupon {\n  id\n  couponDetails: coupon_details {\n    ...MessageObject\n  }\n  discount\n  displayInBag: display_in_basket\n  couponCode: coupon_code\n}\n\nfragment MessageObject on MessageObject {\n  message {\n    ...LocalizedMessageObject\n  }\n}\n\nfragment LocalizedMessageObject on LocalizedMessageObject {\n  lang\n  msg\n}\n",
         'operationName': 'Cart',
@@ -349,11 +337,48 @@ async function getCart(userToken) {
   } catch (error) {
     return {"error": ":("};
   }
-};
+}
+
+async function getAddress(userToken) {
+  try {
+    const response = await fetch('https://graphql-federation-gateway.consumer.gopuff.com/graphql', {
+      method: 'POST',
+      headers: getHeaders(userToken),
+      body: JSON.stringify({
+
+        query: "query UserAddress {\n  userAddresses(pageSize: 1) {\n    collection {\n      ...Address\n    }\n  }\n}\n\nfragment Address on UserAddress {\n  id: railsId\n  lineOne\n  apt\n  zip\n  longitude\n  latitude\n  streetNumber\n  route\n  state\n  city\n  country\n  deliveryInstructions\n  fullAddress\n  recipientName\n  recipientPhone\n  recipientEmail\n}\n",
+        'operationName': 'UserAddress',
+        'variables': {}
+      })
+    });
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    return {"error": ":("};
+  }
+}
+
+function getHeaders(userToken) {
+  return {
+    'accept': 'application/graphql+json, application/json',
+    'accept-language': 'en-US',
+    'authorization': `Token token=${userToken}`,
+    'content-type': 'application/json',
+    'origin': 'https://www.gopuff.com',
+    'priority': 'u=1, i',
+    'sec-ch-ua-mobile': '?1',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'same-site',
+    'x-gp-point-of-sale': 'US'
+  }
+}
 
 const exports = {
   getCart,
-  addToCart
+  addToCart,
+  getAddress
 };
 
 export default exports;

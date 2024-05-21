@@ -16,11 +16,12 @@ function App() {
   const [cart, setCart] = useState({})
   const [productId, setProductId] = useState(1076)
   const [statusMessage, setStatusMessage] = useState('')
+  const [userAddress, setUserAddress] = useState({loading: '...'})
 
 
   if (!userBlob) {
     setTimeout(function() {
-      window.location.href = "http://localhost:4002/c/quick-add?backdoor=true&redirect=gp-test-ee816.web.app"
+      window.location.href = "http://localhost:4002/c/quick-add?backdoor=true&redirect=gopuff.work/redirect/gp-test-ee816.web.app/"
       // window.location.href = "http://localhost:4002/c/quick-add?backdoor=true&redirect=localhost:3000"
     }, 1500)
   } else {
@@ -31,7 +32,9 @@ function App() {
     if (userBlob) {
       utils.getCart(userInfo.userToken).then(response => {
         setCart(response.data.view.cart)
-        console.log('~~~> cart', response.data.view.cart)
+      })
+      utils.getAddress(userInfo.userToken).then(response => {
+        setUserAddress(response?.data.userAddresses?.collection)
       })
     }
   }, [userBlob, userInfo.userToken])
@@ -68,6 +71,11 @@ function App() {
 
       <br />
       <br />
+      /userAddress:
+      <br />
+      <div>{JSON.stringify(userAddress)}</div>
+      <br />
+      <br />
       product id:
       <input
         type="number"
@@ -79,10 +87,8 @@ function App() {
       <br />
       <div>{statusMessage}</div>
       <br />
-      <br />
-      <br />
 
-      {userBlob && <CatchGame />}
+      {/*{userBlob && <CatchGame />}*/}
 
 
     </div>
