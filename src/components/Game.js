@@ -24,6 +24,7 @@ function Game() {
   const [productId, setProductId] = useState(1076)
   const [statusMessage, setStatusMessage] = useState('')
   const [userAddress, setUserAddress] = useState({loading: '...'})
+  const [content, setContent] = useState({loading: '...'})
 
 
   if (!userBlob) {
@@ -42,6 +43,19 @@ function Game() {
       })
       utils.getAddress(userInfo.userToken).then(response => {
         setUserAddress(response?.data.userAddresses?.collection)
+      })
+      utils.getContent(userInfo.userToken, "/us/c/ice-cream/txSaOHD2").then(response => {
+        setContent(response?.data?.view?.content?.content.map(c => {
+          return JSON.stringify({
+            title: c.text?.title,
+            collection: c.collection.map(p => {
+              return {
+                id: p.id,
+                // name: p.productTileInfo ? p.productTileInfo[0].text : null
+              }
+            })
+          }) + '\n\n\n'
+        }))
       })
     }
   }, [userBlob, userInfo.userToken])
@@ -80,6 +94,9 @@ function Game() {
         /userAddress:
         <br />
         <div>{JSON.stringify(userAddress)}</div>
+        <br />
+        <br />
+        <div>{JSON.stringify(content)}</div>
         <br />
         <br />
         product id:
