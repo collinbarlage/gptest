@@ -1,16 +1,20 @@
 
-async function addToCart(cart, userToken, productId) {
-  console.log('~~~> productId', productId)
+async function addToCart(cart, userToken, productsToAdd) {
+  console.log('~~~> productsToAdd', productsToAdd)
   var products = cart.products
-  if (cart.products.find(p => p.id === productId)) {
-    products.find(p => p.id === productId).quantity ++
-  } else {
-    products.push({id: parseInt(productId),
-      price: 0,
-      quantity: 1,
-      giftCards: [],
-      type: "N/A"})
-  }
+  productsToAdd.forEach(productToAdd => {
+    if (cart.products.find(p => p.id === productToAdd.productId)) {
+      products.find(p => p.id === productToAdd.productId).quantity += productToAdd.quantity
+    } else {
+      products.push({id: parseInt(productToAdd.productId),
+        price: 0,
+        quantity: 1,
+        giftCards: [],
+        type: "N/A"})
+    }
+  })
+
+
 
   products = products.map (p => {
     return { id: p.id,

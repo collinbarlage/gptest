@@ -21,7 +21,7 @@ function Game() {
   const userBlob = urlParams.get('userBlob')
   var userInfo = "user token not found. redirecting...."
   const [cart, setCart] = useState({})
-  const [productId, setProductId] = useState(1076)
+  const [productsToAdd, setProductsToAdd] = useState('[\n\t{ "productId": 1071, "quantity": 1 }\n]')
   const [statusMessage, setStatusMessage] = useState('')
   const [userAddress, setUserAddress] = useState({loading: '...'})
   const [content, setContent] = useState({loading: '...'})
@@ -63,7 +63,7 @@ function Game() {
 
   function addToCart() {
     setStatusMessage("Loading ...")
-    utils.addToCart(cart, userInfo.userToken, productId).then(response => {
+    utils.addToCart(cart, userInfo.userToken, JSON.parse(productsToAdd)).then(response => {
       if (response?.data?.view?.setCart?.products) {
         setStatusMessage(JSON.stringify(response.data.view.setCart.products.map(p => {
           return {
@@ -100,10 +100,10 @@ function Game() {
         <br />
         <br />
         product id:
-        <input
-          type="number"
-          value={productId}
-          onChange={(e) => setProductId(e.target.value)}
+        <textarea
+          rows="5" cols="45"
+          value={productsToAdd}
+          onChange={(e) => setProductsToAdd(e.target.value)}
         />
         <br />
         <button onClick={(e) => addToCart()}> atc </button>
