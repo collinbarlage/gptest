@@ -9,7 +9,7 @@
                 [
                     {
                         "key": "Content-Security-Policy",
-                        "value": "frame-ancestors 'self' http://localhost:4002 https://gopuff.com"
+                        "value": "frame-ancestors 'self' http://localhost:4002 https://gopuff.com *.gopuff.dev"
                     },
                     {
                         "key": "X-Content-Type-Options",
