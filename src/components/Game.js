@@ -19,6 +19,7 @@ function Game() {
 
   const urlParams = new URLSearchParams(window.location.search)
   const userBlob = urlParams.get('userBlob')
+  const redirect = urlParams.get('redirect')
   var userInfo = "user token not found. redirecting...."
   const [cart, setCart] = useState({})
   const [productsToAdd, setProductsToAdd] = useState('[\n\t{ "productId": 1071, "quantity": 1 }\n]')
@@ -26,6 +27,9 @@ function Game() {
   const [userAddress, setUserAddress] = useState({loading: '...'})
   const [content, setContent] = useState({loading: '...'})
 
+  if (redirect) {
+    window.location.href = redirect
+  }
 
   if (!userBlob) {
     setTimeout(function() {
