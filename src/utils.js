@@ -27,10 +27,7 @@ async function addToCart(cart, userToken, productsToAdd) {
 
   const response = await fetch('https://graphql-federation-gateway.consumer.gopuff.com/graphql', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'authorization': `Token token=${userToken}`
-    },
+    headers: getHeaders(userToken),
     body: JSON.stringify({
       query: `
                       mutation SetCart($cart: SetCartInputV2, $validate: Boolean = false, $taxes: Boolean = true) {
@@ -365,17 +362,22 @@ async function getAddress(userToken) {
 
 function getHeaders(userToken) {
   return {
-    'accept': 'application/graphql+json, application/json',
-    'accept-language': 'en-US',
-    'authorization': `Token token=${userToken}`,
-    'content-type': 'application/json',
-    'origin': 'https://www.gopuff.com',
-    'priority': 'u=1, i',
-    'sec-ch-ua-mobile': '?1',
-    'sec-fetch-dest': 'empty',
-    'sec-fetch-mode': 'cors',
-    'sec-fetch-site': 'same-site',
-    'x-gp-point-of-sale': 'US'
+    "authorization": `Token token=${userToken}`,
+    "accept": "application/graphql+json, application/json",
+    "accept-language": "en-US",
+    "content-type": "application/json",
+    "origin": "https://www.gopuff.com",
+    "priority": "u=1, i",
+    "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"macOS\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-site",
+    "x-gopuff-client-platform": "web",
+    "x-gopuff-client-user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+    "x-gopuff-client-version": "10.6.21-177109",
+    "x-gp-point-of-sale": "US"
   }
 }
 
@@ -401,7 +403,7 @@ async function getContent(userToken, route) {
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    return {"error": ":("};
+    return {"error": error};
   }
 }
 
