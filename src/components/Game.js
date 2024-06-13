@@ -32,8 +32,8 @@ function Game() {
   }
 
   if (!userBlob) {
-    setTimeout(function() {
-      window.location.href = "http://localhost:4002/c/quick-add?backdoor=true&redirect=gopuff.work/redirect/gp-test-ee816.web.app/"
+    setTimeout(function() { //gopuff.work/redirect/
+      window.location.href = "http://localhost:4002/game?redirect=gp-test-ee816.web.app"
       // window.location.href = "http://localhost:4002/c/quick-add?backdoor=true&redirect=localhost:3000"
     }, 1500)
   } else {
@@ -43,16 +43,16 @@ function Game() {
   useEffect(() => {
     if (userBlob) {
       utils.getCart(userInfo.userToken).then(response => {
-        setCart(response.data.view.cart)
+        setCart(response?.data?.view?.cart)
       })
-      utils.getAddress(userInfo.userToken).then(response => {
-        setUserAddress(response?.data.userAddresses?.collection)
+      utils.getAddress(userInfo?.userToken).then(response => {
+        setUserAddress(response?.data?.userAddresses?.collection)
       })
-      utils.getContent(userInfo.userToken, "/us/c/ice-cream/txSaOHD2").then(response => {
+      utils.getContent(userInfo?.userToken, "/us/c/ice-cream/txSaOHD2").then(response => {
         setContent(response?.data?.view?.content?.content.map(c => {
           return JSON.stringify({
             title: c.text?.title,
-            collection: c.collection.map(p => {
+            collection: c?.collection.map(p => {
               return {
                 id: p.id,
                 // name: p.productTileInfo ? p.productTileInfo[0].text : null
@@ -67,6 +67,9 @@ function Game() {
 
   function addToCart() {
     setStatusMessage("Loading ...")
+    if (window.callFunction) {
+      window.callFunction('atc', [productsToAdd])
+    }
     utils.addToCart(cart, userInfo.userToken, JSON.parse(productsToAdd)).then(response => {
       if (response?.data?.view?.setCart?.products) {
         setStatusMessage(JSON.stringify(response.data.view.setCart.products.map(p => {
