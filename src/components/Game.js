@@ -22,7 +22,7 @@ function Game() {
   const redirect = urlParams.get('redirect')
   var userInfo = "user token not found. redirecting...."
   const [cart, setCart] = useState({})
-  const [productsToAdd, setProductsToAdd] = useState('[\n\t{ "productId": 19947, "quantity": 1 }\n]')
+  const [productsToAdd, setProductsToAdd] = useState('[\n\t{ "productId": 80372, "quantity": 1 }\n]')
   const [statusMessage, setStatusMessage] = useState('')
   const [userAddress, setUserAddress] = useState({loading: '...'})
   const [content, setContent] = useState({loading: '...'})
@@ -98,14 +98,14 @@ function Game() {
 
         <br />
         <br />
-        /userAddress:
-        <br />
-        <div>{JSON.stringify(userAddress)}</div>
-        <br />
-        <br />
-        <div>{JSON.stringify(content)}</div>
-        <br />
-        <br />
+        {/*/userAddress:*/}
+        {/*<br />*/}
+        {/*<div>{JSON.stringify(userAddress)}</div>*/}
+        {/*<br />*/}
+        {/*<br />*/}
+        {/*<div>{JSON.stringify(content)}</div>*/}
+        {/*<br />*/}
+        {/*<br />*/}
         product id:
         <textarea
           rows="5" cols="45"
