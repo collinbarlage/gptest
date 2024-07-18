@@ -32,9 +32,9 @@ function Game() {
   }
 
   if (!userBlob) {
-    setTimeout(function() { //gopuff.work/redirect/
-      window.location.href = "http://localhost:4002/game?redirect=gp-test-ee816.web.app"
-      // window.location.href = "http://localhost:4002/c/quick-add?backdoor=true&redirect=localhost:3000"
+    setTimeout(function() {
+      window.location.href = "http://gopuff.com/game?redirect=gp-test-ee816.web.app"
+      // window.location.href = "http://localhost:4002/game?backdoor=true&redirect=localhost:3000"
     }, 1500)
   } else {
     userInfo = JSON.parse(atob(userBlob))
@@ -69,6 +69,12 @@ function Game() {
     setStatusMessage("Loading ...")
     if (window.callFunction) {
       window.callFunction('atc', [productsToAdd])
+    } else {
+      window.parent.postMessage(JSON.stringify({
+        'type': 'callFunction',
+        'name': 'atc',
+        'args': [productsToAdd]
+      }), '*')
     }
     utils.addToCart(cart, userInfo.userToken, JSON.parse(productsToAdd)).then(response => {
       if (response?.data?.view?.setCart?.products) {
@@ -98,14 +104,14 @@ function Game() {
 
         <br />
         <br />
-        {/*/userAddress:*/}
-        {/*<br />*/}
-        {/*<div>{JSON.stringify(userAddress)}</div>*/}
-        {/*<br />*/}
-        {/*<br />*/}
-        {/*<div>{JSON.stringify(content)}</div>*/}
-        {/*<br />*/}
-        {/*<br />*/}
+        /userAddress:
+        <br />
+        <div>{JSON.stringify(userAddress)}</div>
+        <br />
+        <br />
+        <div>{JSON.stringify(content)}</div>
+        <br />
+        <br />
         product id:
         <textarea
           rows="5" cols="45"
