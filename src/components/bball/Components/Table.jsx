@@ -24,11 +24,11 @@ export default function Table(props) {
     const increaseScore = useGame((state) => state.increment)
 
     const goal = () => {
-        if(!isScored) {
-            setIsScored(true)
-            increaseScore()
-            useGame.setState({ isScored: true })
-        }
+        // if(!isScored) {
+        //     setIsScored(true)
+        //     increaseScore()
+        //     useGame.setState({ isScored: true })
+        // }
     }
 
     const clickUp = (controlRef, isControlAPushed) => {
