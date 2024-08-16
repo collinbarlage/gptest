@@ -10,6 +10,7 @@ import {
 
 import Signup from './components/Signup'
 import Game from './components/Game'
+import BBall from './components/BBall'
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
 
           <Route path="/signup">
             <Signup />
+          </Route>
+          <Route path="/bball">
+            <BBall />
           </Route>
         </Switch>
       </Router>

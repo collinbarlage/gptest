@@ -1,0 +1,44 @@
+/*@font-face {
+    font-family: 'Basketball';
+    src: local("Basketball"),
+        url("/fonts/Basketball.otf") format("truetype");
+}*/
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    background-color: #08224B;
+    font-family: 'Basketball', sans-serif;
+}
+
+html,
+body,
+#root,
+#main {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    user-select: none;
+}
+
+div {
+    touch-action: none;
+}
+
+.points {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 1.25rem;
+}
