@@ -46,7 +46,7 @@ const BBall = () => {
     return ReactDOM.createRoot(document.getElementById('root')).render(
     <>
     <Interface />
-            <div style={{ position: 'absolute', bottom: '20px', left: '50%', zIndex: 100 }}>
+            <div style={{ position: 'absolute', bottom: '100px', left: '50%', zIndex: 100 }}>
                 <ShotMeter ballRef={ballRef} />
             </div>
       <Canvas

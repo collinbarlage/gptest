@@ -68,21 +68,25 @@ const ShotMeter = ({ ballRef }) => {
     setIsPressing(false);
   };
 
-  return (
+return (
+  <div
+    style={{
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+    }}
+  >
     <div
       className="shot-meter"
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
+      onTouchStart={handleMouseDown}
+      onTouchEnd={handleMouseUp}
       style={{
-        width: '100px',
-        height: '100px',
-        borderRadius: '50%',
         background: `conic-gradient(
           ${color} ${percentage * 3.6}deg,
           #ECEEE9 ${percentage * 3.6}deg 100%)`,
-        position: 'relative',
-        border: '2px solid black',
-        cursor: 'pointer',
       }}
     >
       <div
@@ -93,12 +97,14 @@ const ShotMeter = ({ ballRef }) => {
           transform: 'translate(-50%, -50%)',
           fontWeight: 'bold',
           fontSize: '16px',
+          pointerEvents: 'none', // Ensure the text doesn't block clicks
         }}
       >
         {Math.round(percentage)}%
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default ShotMeter;

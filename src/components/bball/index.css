@@ -42,3 +42,18 @@ div {
     color: #fff;
     font-size: 1.25rem;
 }
+
+.shot-meter {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  position: relative;
+  border: 2px solid black;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
