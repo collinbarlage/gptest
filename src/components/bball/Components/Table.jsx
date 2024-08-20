@@ -34,7 +34,7 @@ export default function Table(props) {
     console.log('~~~> nodes', nodes)
 
     return (
-        <group {...props} dispose={null} rotation={[0, -Math.PI / 2, 0]}>
+        <group {...props} dispose={null} position={[0, 2, 0]} rotation={[0, -Math.PI / 2, 0]}>
             <RigidBody type="fixed" colliders="trimesh" restitution={tableRestitution} friction={tableFriction}>
                 <CuboidCollider
                     args={[0, 2, 1.5]}
@@ -73,7 +73,7 @@ export default function Table(props) {
                 />
                 <CuboidCollider
                     args={[0.35, 0, 0.35]}
-                    position={[0, -0.5, 0]}
+                    position={[-0.2, -0.5, 0]}
                     sensor
                     onIntersectionExit={goal}
                 />

@@ -14,10 +14,10 @@ const useBallPhysics = (initialPosition) => {
         if (ballRef.current) {
             ballRef.current.setGravityScale(1, true)
 
-            const forceMultiplier = 2.4
+            const forceMultiplier = 2.65
             const forceMagnitude = force * forceMultiplier
 
-            const radians = (45 * Math.PI) / 180; // radians
+            const radians = (40 * Math.PI) / 180; // radians
             const forceY = Math.cos(radians) * forceMagnitude
             const forceZ = Math.sin(radians) * forceMagnitude * -1
             const forceX = force > .8
