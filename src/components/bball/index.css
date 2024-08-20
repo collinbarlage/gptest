@@ -1,8 +1,7 @@
-/*@font-face {
-    font-family: 'Basketball';
-    src: local("Basketball"),
-        url("/fonts/Basketball.otf") format("truetype");
-}*/
+@font-face {
+  font-family: 'ABCGintoNormal';
+  src: url('./assets/ABCGintoNormal-Regular.ttf') format('truetype');
+}
 
 * {
     box-sizing: border-box;
@@ -10,8 +9,8 @@
 
 html,
 body {
-    background-color: #08224B;
-    font-family: 'Basketball', sans-serif;
+    background-color: #fff;
+    font-family: 'ABCGintoNormal', sans-serif;
 }
 
 html,
@@ -39,7 +38,7 @@ div {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #fff;
+    color: #000;
     font-size: 1.25rem;
 }
 

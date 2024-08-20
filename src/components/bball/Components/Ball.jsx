@@ -4,10 +4,11 @@ import useBallPhysics from "./useBallPhysics";
 import { useGLTF } from "@react-three/drei";
 
 const Ball = forwardRef(({ position }, ref) => {
-    const { ballRef, shoot } = useBallPhysics(position);
+    const { ballRef, shoot, reset } = useBallPhysics(position);
 
     useImperativeHandle(ref, () => ({
         shoot,
+        reset
     }));
 
     const { nodes, materials } = useGLTF("/models/basketball.glb");

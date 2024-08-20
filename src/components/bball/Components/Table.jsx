@@ -24,101 +24,12 @@ export default function Table(props) {
     const increaseScore = useGame((state) => state.increment)
 
     const goal = () => {
-        // if(!isScored) {
-        //     setIsScored(true)
-        //     increaseScore()
-        //     useGame.setState({ isScored: true })
-        // }
-    }
-
-    const clickUp = (controlRef, isControlAPushed) => {
-        if (controlRef.current) {
-            useGame.setState({ [isControlAPushed ? 'isControlAPushed' : 'isControlBPushed']: false })
-            controlRef.current.position.y = 0.128
+        if(!isScored) {
+            setIsScored(true)
+            increaseScore()
+            useGame.setState({ isScored: true })
         }
     }
-
-    const clickDown = (controlRef, isControlAPushed) => {
-        if (controlRef.current) {
-            useGame.setState({ [isControlAPushed ? 'isControlAPushed' : 'isControlBPushed']: true })
-            controlRef.current.position.y = 0.128 - 0.1
-        }
-    }
-
-    useEffect(() => {
-        const upY = 0.5
-
-        const unsuscribeA = useGame.subscribe(
-            (state) => state.isControlAPushed,
-            (isControlAPushed) => {
-                if (thrusterA.current) {
-                    const position = vec3(thrusterA.current.translation())
-
-                    if (isControlAPushed) {
-                        thrusterA.current.setNextKinematicTranslation({
-                            x: position.x,
-                            y: position.y + upY,
-                            z: position.z
-                        })
-                    } else {
-                        thrusterA.current.setNextKinematicTranslation({
-                            x: position.x,
-                            y: position.y - upY,
-                            z: position.z
-                        })
-                    }
-                }
-            }
-        )
-
-        const unsuscribeB = useGame.subscribe(
-            (state) => state.isControlBPushed,
-            (isControlBPushed) => {
-                if (thrusterB.current) {
-                    const position = vec3(thrusterB.current.translation())
-                    if (isControlBPushed) {
-                        thrusterB.current.setNextKinematicTranslation({
-                            x: position.x,
-                            y: position.y + upY,
-                            z: position.z
-                        })
-                    } else {
-                        thrusterB.current.setNextKinematicTranslation({
-                            x: position.x,
-                            y: position.y - upY,
-                            z: position.z
-                        })
-                    }
-                }
-            }
-        )
-
-        const handleKeyDown = (event) => {
-            if (event.key === 'a') {
-                clickDown(controlA, true)
-            } else if (event.key === 'd') {
-                clickDown(controlB, false)
-            }
-        }
-
-        const handleKeyUp = (event) => {
-            if (event.key === 'a') {
-                clickUp(controlA, true)
-            } else if (event.key === 'd') {
-                clickUp(controlB, false)
-            }
-        }
-
-        window.addEventListener('keydown', handleKeyDown)
-        window.addEventListener('keyup', handleKeyUp)
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown)
-            window.removeEventListener('keyup', handleKeyUp)
-            unsuscribeA()
-            unsuscribeB()
-        }
-    }, [])
 
     console.log('~~~> nodes', nodes)
 
@@ -144,7 +55,7 @@ export default function Table(props) {
             >
             </RigidBody>
             <RigidBody type="fixed" colliders="trimesh">
-                <mesh //backboard
+                <mesh
                     castShadow
                     receiveShadow
                     geometry={nodes.board.geometry}
@@ -153,20 +64,19 @@ export default function Table(props) {
                     scale={[2.5,1.5,2]}
                     rotation={[Math.PI / 2, 0, -Math.PI / 2]}
                 />
+                <mesh
+                    castShadow
+                    receiveShadow
+                    position={[0,0,0]}
+                    geometry={nodes.Ring.geometry}
+                    material={materials.Red}
+                />
                 <CuboidCollider
                     args={[0.35, 0, 0.35]}
-                    position={[0,0,0]}
+                    position={[0, -0.5, 0]}
                     sensor
                     onIntersectionExit={goal}
-                >
-                    <mesh
-                        castShadow
-                        receiveShadow
-                        position={[0,0,0]}
-                        geometry={nodes.Ring.geometry}
-                        material={materials.Red}
-                    />
-                </CuboidCollider>
+                />
             </RigidBody>
         </group>
     );

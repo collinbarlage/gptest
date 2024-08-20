@@ -13,6 +13,7 @@ const maxThreshold = 80
 const ShotMeter = ({ ballRef }) => {
   const [isPressing, setIsPressing] = useState(false);
   const [percentage, setPercentage] = useState(0);
+  const [timeoutReset, setTimeoutReset] = useState(0);
   const [color, setColor] = useState(BLUE);
   const intervalRef = useRef(null);
 
@@ -46,10 +47,10 @@ const ShotMeter = ({ ballRef }) => {
         setColor(RED)
       }
 
-
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         reset()
       }, 1000)
+      setTimeoutReset(timeout)
     }
   };
 
@@ -60,6 +61,9 @@ const ShotMeter = ({ ballRef }) => {
 
   // Handle mouse down event to start the meter
   const handleMouseDown = () => {
+    reset()
+    ballRef.current.reset()
+    clearTimeout(timeoutReset)
     setIsPressing(true);
   };
 

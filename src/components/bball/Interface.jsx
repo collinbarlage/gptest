@@ -4,7 +4,7 @@ const Interface = () => {
     const points = useGame((state) => state.score)
 
     return <div className="points">
-        {/*<h1>{points} points</h1>*/}
+        <h1>score: {points}</h1>
     </div>
 }
 
