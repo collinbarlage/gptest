@@ -8,7 +8,8 @@ const YELLOW = "#F8CB45"
 const redTheshold = 50
 const yellowTheshold = 60
 const greenTheshold = 75
-const maxThreshold = 80
+const maxYellowTheshold = 80
+const maxThreshold = 85
 
 const ShotMeter = ({ ballRef }) => {
   const [isPressing, setIsPressing] = useState(false);
@@ -39,7 +40,8 @@ const ShotMeter = ({ ballRef }) => {
     if (percentage < redTheshold) {
       reset()
     } else {
-      if (percentage > yellowTheshold && percentage <= greenTheshold) {
+      if ((percentage > yellowTheshold && percentage <= greenTheshold) ||
+          (percentage > maxYellowTheshold && percentage <= maxThreshold)) {
         setColor(YELLOW)
       } else if (percentage > greenTheshold && percentage <= maxThreshold) {
         setColor(GREEN)

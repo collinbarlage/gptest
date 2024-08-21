@@ -2,11 +2,17 @@ import { useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from 'three';
+import { Leva, useControls } from 'leva';
 
 const resetAngle = new THREE.Quaternion();
 resetAngle.setFromEuler(new THREE.Euler(0, Math.PI, 0));
 
 const useBallPhysics = (initialPosition) => {
+    const { forceMultiplier, shootingAngle } = useControls('shooting', {
+        forceMultiplier: {label: 'force', value: 0.75, min: 0, max: 3, step: 0.02},
+        shootingAngle: {label: 'angle', value: 50, min: 0, max: 90, step: 1},
+    });
+
     const ballRef = useRef(null);
     const [gravityEnabled, setGravityEnabled] = useState(false);
 
@@ -14,10 +20,10 @@ const useBallPhysics = (initialPosition) => {
         if (ballRef.current) {
             ballRef.current.setGravityScale(1, true)
 
-            const forceMultiplier = 2.65
+            // const forceMultiplier = .7
             const forceMagnitude = force * forceMultiplier
 
-            const radians = (40 * Math.PI) / 180; // radians
+            const radians = ((90 - shootingAngle) * Math.PI) / 180; // radians
             const forceY = Math.cos(radians) * forceMagnitude
             const forceZ = Math.sin(radians) * forceMagnitude * -1
             const forceX = force > .8

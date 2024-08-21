@@ -46,14 +46,6 @@ export default function Table(props) {
                 />
             </RigidBody>
 
-            <RigidBody
-                ref={thrusterB}
-                type="kinematicPosition"
-                colliders="hull"
-                lockRotations={true}
-                enabledTranslations={[false, true, false]}
-            >
-            </RigidBody>
             <RigidBody type="fixed" colliders="trimesh">
                 <mesh
                     castShadow
