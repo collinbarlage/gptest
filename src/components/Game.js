@@ -67,15 +67,6 @@ function Game() {
 
   function addToCart() {
     setStatusMessage("Loading ...")
-    if (window.callFunction) {
-      window.callFunction('atc', [productsToAdd])
-    } else {
-      window.parent.postMessage(JSON.stringify({
-        'type': 'callFunction',
-        'name': 'atc',
-        'args': [productsToAdd]
-      }), '*')
-    }
     utils.addToCart(cart, userInfo.userToken, JSON.parse(productsToAdd)).then(response => {
       if (response?.data?.view?.setCart?.products) {
         setStatusMessage(JSON.stringify(response.data.view.setCart.products.map(p => {
@@ -87,7 +78,6 @@ function Game() {
       } else {
         setStatusMessage("error :(")
       }
-
     })
   }
 
