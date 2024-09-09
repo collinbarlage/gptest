@@ -316,6 +316,17 @@ async function addToCart(cart, userToken, productsToAdd) {
     }),
   })
   const responseData = await response.json();
+
+  if (window.callFunction) {
+    window.callFunction('atc', [productsToAdd])
+  } else {
+    window.parent.postMessage(JSON.stringify({
+      'type': 'callFunction',
+      'name': 'atc',
+      'args': [productsToAdd]
+    }), '*')
+  }
+
   return responseData
 }
 
